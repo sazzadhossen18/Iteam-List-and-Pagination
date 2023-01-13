@@ -1,0 +1,248 @@
+
+<div class="customer-sya-section">
+  <div class="customer-container">
+<div class="list-wrapper">
+
+  {% for block in section.blocks %}
+  <div class="list-item">
+     <div class="author-conetent">
+        <div class="author-image">
+          {% if block.settings.image != blank %}
+             <img src="{{ block.settings.image | img_url:'master' }}" width="50px" height="50px">
+            {% endif %}
+          <div class="done"></div>
+        </div>
+        <div class="author-name">
+          <h3>{{ block.settings.author_name }}</h3>
+        </div>
+     </div>
+    <div class="review-conetent">
+      <h2 class="subheading">{{ block.settings.sub_title }}</h2>
+      <p>{{ block.settings.review_content }}</p>
+  </div>
+
+</div>
+ {% endfor %}
+<div id="pagination-container"></div>
+  
+  </div>
+</div>
+
+
+
+
+<style>
+ div:empty{
+   display:block;
+ }
+.customer-container {
+    width: 60%;
+    margin: auto;
+}
+
+
+ .author-image img{
+     border-radius: 50%;
+ } 
+.author-image {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+  
+.done {
+    border-radius: 50%;
+    height: 20px;
+    border: 1px solid#ccc;
+    position: relative;
+    top: calc(50% - 50px);
+    width: 20px;
+    left: -19%;
+    background: #fff;
+}
+  .done:after,
+  .done:before {
+    background-color: green;
+    border-radius: 2px;
+    content: '';
+    left: calc(50% + 2px);
+    position: absolute;
+    top: calc(25% + 2px);
+  }
+  
+.done:after {
+    height: 5px;
+    transform: rotate(-45deg) translateX(-1px);
+    transform-origin: bottom left;
+    width: 9px;
+}
+  
+ .done:before {
+    height: 5px;
+    transform: rotate(-135deg);
+    transform-origin: bottom left;
+    width: 8px;
+}
+
+
+.author-conetent {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+}
+h2.subheading {
+    font-weight: 700;
+    margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.review-conetent p {
+    line-height: 22px;
+    font-size: 15px;
+    font-weight: 400;
+}
+.author-name h3 {
+    text-transform: uppercase;
+    font-weight: 700;
+}
+  
+  
+.list-wrapper {
+  padding: 15px;
+  overflow: hidden;
+}
+
+.list-item {
+    border: 1px solid #ccc;
+    background: #F6F0EC;
+    margin-bottom: 25px;
+    border-radius: 25px;
+    padding: 20px 56px 30px 25px;
+}
+
+.list-item h4 {
+  color: #FF7182;
+  font-size: 18px;
+  margin: 0 0 5px;  
+}
+
+.list-item p {
+  margin: 0;
+}
+
+.simple-pagination ul {
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.simple-pagination li {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.simple-pagination li a, .simple-pagination li span {
+    color: #666;
+    padding: 5px 10px;
+    text-decoration: none;
+    /* border: 1px solid #EEE; */
+    background-color: #FFF;
+    /* box-shadow: 0px 0px 10px 0px #EEE; */
+}
+
+.simple-pagination .current {
+  color: #FFF;
+  background-color: #ff4d44;
+  border-color: #ff4d44;
+}
+
+.simple-pagination .prev.current,
+.simple-pagination .next.current {
+  background: #fff;
+}
+</style>
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.js"></script>
+
+<script>
+var items = $(".list-wrapper .list-item");
+    var numItems = items.length;
+    var perPage = 3;
+
+    items.slice(perPage).hide();
+
+    $('#pagination-container').pagination({
+        items: numItems,
+        itemsOnPage: perPage,
+        prevText: "&laquo;",
+        nextText: "&raquo;",
+        onPageClick: function (pageNumber) {
+            var showFrom = perPage * (pageNumber - 1);
+            var showTo = showFrom + perPage;
+            items.hide().slice(showFrom, showTo).show();
+        }
+    });
+
+
+
+</script>
+
+
+{% schema %}
+  {
+    "name": "Customer Says Section",
+    "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color"
+    }
+  ],
+
+  "blocks": [
+     {
+       "name": "Slide",
+       "type": "slide",
+       "settings": [
+          {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Content"
+         },
+         {
+           "type": "text",
+           "id": "author_name",
+           "label": "Name"
+         },
+         {
+           "type": "text",
+           "id": "sub_title",
+           "label": "Sub Title"
+         },
+         {
+           "type": "richtext",
+           "id": "review_content",
+           "label": "Content"
+         }
+         
+          
+       ]
+     }
+  ],
+  "presets": [
+    {
+      "name": "Customer Says Section"
+      
+    }
+  ]
+
+    
+  }
+{% endschema %}
